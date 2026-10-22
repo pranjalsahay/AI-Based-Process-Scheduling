@@ -1,0 +1,19 @@
+"""API routes package."""
+
+from fastapi import APIRouter
+from app.api.health import router as health_router
+from app.api.sessions import router as sessions_router
+from app.api.chat import router as chat_router
+from app.api.progress import router as progress_router
+from app.api.scheduling import router as scheduling_router
+from app.api.knowledge import router as knowledge_router
+
+api_router = APIRouter()
+api_router.include_router(health_router)
+api_router.include_router(sessions_router)
+api_router.include_router(chat_router)
+api_router.include_router(progress_router)
+api_router.include_router(scheduling_router)
+api_router.include_router(knowledge_router)
+
+__all__ = ["api_router"]

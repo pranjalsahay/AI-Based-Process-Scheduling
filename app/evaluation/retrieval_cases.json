@@ -1,0 +1,38 @@
+[
+  {
+    "query": "What causes the convoy effect and how does it impact device utilization?",
+    "topic": "fcfs",
+    "expected_document_id": "01_fcfs_algorithm",
+    "expected_keywords": ["convoy", "long burst", "i/o"]
+  },
+  {
+    "query": "Explain what dispatch latency is and what the dispatcher does.",
+    "topic": "fundamentals",
+    "expected_document_id": "02_scheduling_concepts",
+    "expected_keywords": ["dispatcher", "context", "latency"]
+  },
+  {
+    "query": "Why is Shortest Job First optimal for average waiting time?",
+    "topic": "sjf",
+    "expected_document_id": "01_sjf_non_preemptive",
+    "expected_keywords": ["optimal", "waiting time", "burst"]
+  },
+  {
+    "query": "How does aging solve starvation in priority scheduling?",
+    "topic": "priority",
+    "expected_document_id": "01_priority_scheduling",
+    "expected_keywords": ["aging", "starvation", "priority"]
+  },
+  {
+    "query": "What happens if the time quantum in Round Robin is too large or too small?",
+    "topic": "round_robin",
+    "expected_document_id": "01_round_robin_algorithm",
+    "expected_keywords": ["quantum", "context switch", "fcfs"]
+  },
+  {
+    "query": "Why are waiting time and response time different in preemptive systems?",
+    "topic": "metrics",
+    "expected_document_id": "01_scheduling_metrics",
+    "expected_keywords": ["response time", "waiting time", "turnaround"]
+  }
+]

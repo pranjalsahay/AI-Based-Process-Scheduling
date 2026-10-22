@@ -1,0 +1,74 @@
+[
+  {
+    "case_id": "TC_01_CORRECT_FCFS",
+    "topic": "FCFS",
+    "mode": "socratic",
+    "user_input": "Under FCFS, the execution order is determined by arrival time.",
+    "expected_action": "ask_question",
+    "expected_misconception": null,
+    "notes": "Student correctly identifies arrival order as FCFS selection criterion."
+  },
+  {
+    "case_id": "TC_02_PARTIAL_SJF",
+    "topic": "SJF",
+    "mode": "socratic",
+    "user_input": "SJF chooses the process with the shortest burst time, but it immediately stops if another process arrives.",
+    "expected_action": "provide_hint",
+    "expected_misconception": "Confusing non-preemptive SJF with preemptive SRTF",
+    "notes": "Student accurately states shortest burst selection but mistakenly attributes preemption to standard non-preemptive SJF."
+  },
+  {
+    "case_id": "TC_03_INCORRECT_PRIORITY_CONVENTION",
+    "topic": "Priority",
+    "mode": "socratic",
+    "user_input": "Priority 5 will always execute before Priority 1 because 5 is a higher number.",
+    "expected_action": "provide_hint",
+    "expected_misconception": "Assuming higher integer always means higher priority without verifying system convention",
+    "notes": "Student overlooks that in UNIX and standard textbooks, 1 is higher priority than 5."
+  },
+  {
+    "case_id": "TC_04_CONFUSING_WT_AND_RT",
+    "topic": "Metrics",
+    "mode": "socratic",
+    "user_input": "Waiting time and response time are always the exact same number.",
+    "expected_action": "provide_hint",
+    "expected_misconception": "Believing waiting time and response time are identical across all algorithms",
+    "notes": "Student ignores preemption interruptions that accumulate waiting time after the initial response."
+  },
+  {
+    "case_id": "TC_05_EXPLICIT_EXPLANATION_REQUEST",
+    "topic": "Round Robin",
+    "mode": "explanation",
+    "user_input": "I don't understand how the time quantum works. Please just explain it directly to me.",
+    "expected_action": "explain_concept",
+    "expected_misconception": null,
+    "notes": "Tutor must avoid questioning and provide structured 6-part direct explanation."
+  },
+  {
+    "case_id": "TC_06_HINT_REQUEST",
+    "topic": "SRTF",
+    "mode": "socratic",
+    "user_input": "I'm stuck. Can you give me a hint about which process should run at t=1?",
+    "expected_action": "provide_hint",
+    "expected_misconception": null,
+    "notes": "Tutor provides a targeted hint comparing remaining bursts without revealing the answer."
+  },
+  {
+    "case_id": "TC_07_INDEPENDENT_PRACTICE_REQUEST",
+    "topic": "FCFS",
+    "mode": "independent_practice",
+    "user_input": "Give me an independent numerical problem with 3 processes so I can solve it myself.",
+    "expected_action": "present_problem",
+    "expected_misconception": null,
+    "notes": "Tutor presents problem parameters without leaking the solution table or Gantt chart."
+  },
+  {
+    "case_id": "TC_08_OUT_OF_SCOPE",
+    "topic": "Fundamentals",
+    "mode": "socratic",
+    "user_input": "Can you give me a recipe for chocolate cake?",
+    "expected_action": "ask_question",
+    "expected_misconception": null,
+    "notes": "Tutor politely redirects conversation back to CPU process scheduling concepts."
+  }
+]
