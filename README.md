@@ -48,7 +48,7 @@ The system assesses a learner's prerequisite knowledge, asks one targeted questi
 
 ## 2. Architecture & Directory Structure
 
-```text
+
 schedulai/
 ├── app/
 │   ├── main.py                  # FastAPI application entry point & static file mount
