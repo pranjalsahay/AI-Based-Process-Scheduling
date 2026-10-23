@@ -1,0 +1,25 @@
+{
+  "raw_count": 1653,
+  "validated_unique_count": 1644,
+  "duplicate_count": 9,
+  "failure_count": 0,
+  "train_count": 1315,
+  "val_count": 164,
+  "test_count": 165,
+  "approx_total_tokens": 668483,
+  "category_distribution": {
+    "A_NEW_CONCEPT": 80,
+    "F_UNKNOWN_ANSWER": 40,
+    "D_MISCONCEPTION_CORRECTION": 16,
+    "J_DIRECT_ANSWER": 13,
+    "I_NUMERICAL_SOLVING": 17,
+    "K_QUIZ_SESSION": 12,
+    "N_NATURAL_CONVERSATION": 10,
+    "EXPANDED_UNKNOWN": 293,
+    "EXPANDED_PARTIAL": 293,
+    "EXPANDED_PREEMPTION_CHECK": 290,
+    "EXPANDED_TRADEOFF": 290,
+    "EXPANDED_QUIZ_REQ": 290
+  },
+  "validation_failures": []
+}

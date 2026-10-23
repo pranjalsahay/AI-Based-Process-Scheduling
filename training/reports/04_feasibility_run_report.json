@@ -1,0 +1,13 @@
+{
+  "status": "PASSED",
+  "timestamp": "2026-10-23 18:03:23",
+  "base_model": "C:\\pranjalos\\training\\base_model",
+  "load_time_seconds": 2.85,
+  "all_parameters": 502830976,
+  "trainable_parameters": 8798208,
+  "trainable_percentage": 1.7497,
+  "initial_loss": 5.3244,
+  "adapter_gradients_verified": true,
+  "checkpoint_path": "training\\checkpoints\\feasibility_test_adapter",
+  "test_generation_preview": "FCFS stands for \"First-Come, First-Served.\" In computer systems, this refers to the method of scheduling tasks or processes in which each task (or process) is assigned an order based on its arrival time. The first one that arrives at a processor or system is executed first, and"
+}

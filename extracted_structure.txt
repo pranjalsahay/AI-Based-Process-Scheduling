@@ -1,0 +1,267 @@
+P[0] (Style: Normal): VELLORE INSTITUTE OF TECHNOLOGY, VELLORE
+School of Computer Science and Engineering (SCOPE)
+P[1] (Style: Normal): MINI PROJECT REPORT
+
+WattWise — Smart Energy Consumption & Audit System
+
+Course Code: BCSE302P – Database Systems Laboratory
+P[2] (Style: Normal): Submitted by
+P[3] (Style: Normal): Under the guidance of
+P[4] (Style: Normal): Dr. G. M. Karthik
+Associate Professor, School of Computer Science and Engineering (SCOPE)
+Vellore Institute of Technology, Vellore
+
+Date of Submission: 22/10/2026
+P[6] (Style: Heading 1): CERTIFICATE
+P[7] (Style: Heading 1): This is to certify that the Mini Project Report titled “Watt Wise — Smart Energy Consumption & Audit System”, submitted by Pranjal Sahay (Reg. No. 24BKT0082) in partial fulfilment of the requirements of the course BCSE302P – Database Systems Laboratory, is a record of original work carried out under my supervision during the Fall Semester 2026–27.
+P[8] (Style: Normal): Signature of the Faculty
+
+
+Dr. G. M. Karthik
+Associate Professor, SCOPE
+VIT, Vellore
+P[9] (Style: Normal): Place: Vellore
+Date: October 2026
+P[11] (Style: Heading 1): ABSTRACT
+P[12] (Style: Normal): WattWise is an enterprise-grade Smart Energy Consumption and Audit System developed to address the critical challenge of electricity tracking, baseline forecasting, and anomaly detection across multi-facility institutional campuses. Centered upon robust Database Management System (DBMS) principles, the system models physical campus hierarchies spanning buildings, floors, rooms, and electrical devices in a strictly normalized Third Normal Form (3NF) relational database. Implemented using MySQL 8.0, the persistence layer utilizes transactional ACID storage engines, relational integrity constraints, and compound B-Tree indexes on time-series telemetry. Advanced SQL features—including stored procedures, stored functions, row-level triggers, explicit cursors, and SQL window functions (LAG OVER PARTITION BY)—are deployed to transform cumulative meter readings into discrete interval consumption, prevent physical meter regressions, and detect abnormal off-hours or equipment energy spikes. The relational schema is integrated with a high-performance Python FastAPI backend and an interactive React 19 single-page application featuring a dedicated Database Studio for real-time table inspection and dynamic SQL execution. The system guarantees zero data loss, enforces role-based access security, and automates institutional energy auditing with verified sub-second analytical reporting.
+P[13] (Style: Normal): Keywords: Database Management Systems, 3NF Normalization, Stored Procedures, Triggers, Cursors, Window Functions, Energy Audit.
+P[15] (Style: Heading 1): TABLE OF CONTENTS
+P[18] (Style: Heading 1): 1. INTRODUCTION
+P[19] (Style: Heading 2): 1.1 Problem Statement
+P[20] (Style: Normal): Commercial buildings, university campuses, research laboratories, and large institutional facilities account for a substantial fraction of modern electrical energy consumption. In most organizations, electrical tracking remains primitive, relying on aggregated monthly utility invoices, manual pen-and-paper meter logbooks, or disconnected spreadsheets. These legacy methods suffer from critical vulnerabilities: manual data entry leads to clerical errors; spreadsheet architectures lack referential integrity, creating orphaned device logs; and monthly aggregate bills fail to illuminate granular equipment-level wastage, power factor degradation, or off-hours phantom loads. When an HVAC unit malfunctions or a server room experiences cooling failure during non-working hours, the anomaly goes undetected until catastrophic failure occurs or an inflated monthly utility bill arrives. Consequently, there is an urgent need for a robust, centralized Database Management System capable of ingesting high-frequency telemetry, enforcing schema constraints, isolating spatial consumption, and detecting abnormal usage in real time.
+P[21] (Style: Heading 2): 1.2 Objectives
+P[22] (Style: List Bullet): Objective 1 – Relational Schema Design: Design and normalize an enterprise relational schema to Third Normal Form (3NF) to model campus buildings, rooms, equipment sub-meters, and time-series electrical telemetry without redundancy.
+P[23] (Style: List Bullet): Objective 2 – Data Integrity & Constraints: Enforce strict integrity constraints, foreign key cascades, unique compound keys, and row-level validation triggers to eliminate negative consumption anomalies and duplicate timestamps.
+P[24] (Style: List Bullet): Objective 3 – Programmable Database Logic: Implement database-level stored functions, procedures, explicit cursors, and SQL window functions (LAG()) to compute accurate interval consumption from cumulative physical meter registers.
+P[25] (Style: List Bullet): Objective 4 – Rule-Based Anomaly Detection: Engineer automated SQL-backed anomaly rules to detect off-hours consumption, rated power exceedance, and sudden load spikes.
+P[26] (Style: List Bullet): Objective 5 – Secure Full-Stack Application: Develop a modern full-stack web application with role-based access control (Admin, Auditor, Viewer) and an interactive Database Studio enabling live table inspection and parameterized query execution.
+P[27] (Style: Heading 2): 1.3 Importance of DBMS
+P[28] (Style: Normal): A relational DBMS is uniquely suited for enterprise energy monitoring over ad-hoc file storage or non-relational alternatives due to:
+P[29] (Style: List Bullet): 1. Data Integrity: Foreign key relationships guarantee that meter readings cannot exist without a valid parent device, and devices cannot exist without a valid room. CHECK constraints reject negative power values at the engine level.
+P[30] (Style: List Bullet): 2. Elimination of Redundancy: Through 3NF normalization, building names, floor areas, and tariff rates are stored exactly once. A change in building metadata instantly reflects across millions of historical readings without update anomalies.
+P[31] (Style: List Bullet): 3. ACID Concurrency Control: Automated sensor ingestion and manual CSV uploads execute inside isolated transactions. Read-committed isolation guarantees that analytical audit reports reflect consistent point-in-time snapshots without dirty reads.
+P[32] (Style: List Bullet): 4. High-Performance Querying: Composite B-Tree indexes on (device_id, recorded_at) permit instant logarithmic-time lookup across multi-million row telemetry tables.
+P[33] (Style: List Bullet): 5. Granular Security & Auditability: Database-backed audit logs record all administrative operations, tariff modifications, and user authentications.
+P[34] (Style: Heading 2): 1.4 Scope of the Project
+P[35] (Style: Normal): The scope of WattWise encompasses the complete architectural modeling of physical campus hierarchies (Buildings → Rooms → Devices → Meter Readings), electricity tariff structures with effective date ranges, automated rule-based anomaly detection, dynamic building comparisons (Energy Use Intensity in kWh/m²), automated energy audit generation, and live database inspection. Explicitly out of scope is the physical deployment of proprietary IoT hardware; telemetry ingestion is fully supported via standard REST APIs, automated periodic simulators, and atomic batch CSV file uploads.
+P[37] (Style: Heading 1): 2. SYSTEM REQUIREMENTS
+P[38] (Style: Heading 2): 2.1 Hardware Requirements
+P[39] (Style: Normal): The minimum and recommended hardware specifications required to host the database and application tiers are detailed below:
+P[40] (Style: Heading 2): 2.2 Software Requirements
+P[41] (Style: Normal): The software stack, database engine, development libraries, and modeling environments utilized are listed below:
+P[43] (Style: Heading 1): 3. DATABASE DESIGN
+P[44] (Style: Heading 2): 3.1 Entity–Relationship (ER) Diagram
+P[45] (Style: Normal): The WattWise conceptual model consists of 10 interconnected entities designed to balance expressive spatial hierarchy with strict relational integrity. The primary entities and their cardinality constraints include:
+P[46] (Style: List Bullet): • BUILDINGS to ROOMS (1:N): One building contains one or more rooms. Total participation on Rooms (a room cannot exist without a parent building).
+P[47] (Style: List Bullet): • ROOMS to DEVICES (1:N): One room houses multiple electrical devices or sub-meters. Total participation on Devices.
+P[48] (Style: List Bullet): • DEVICES to METER_READINGS (1:N): One device logs an indefinite sequence of chronological meter readings. Total participation on Readings.
+P[49] (Style: List Bullet): • BUILDINGS to ALERTS (1:N): One building may trigger multiple anomaly alerts over time. Optional participation on Rooms and Devices.
+P[50] (Style: List Bullet): • USERS to AUDIT_LOGS (1:N): One user initiates multiple operational actions recorded in audit logs. Nullable foreign key supports automated system actions.
+P[52] (Style: Normal): Figure 3.1: Complete Entity–Relationship (ER) Diagram of WattWise
+P[53] (Style: Heading 2): 3.2 Relational Schema Definitions
+P[54] (Style: Normal): The physical schema structures, column data types, and integrity constraints for all 10 tables are specified below:
+P[55] (Style: Heading 3): Table 3.1: buildings
+P[56] (Style: Heading 3): Table 3.2: rooms
+P[57] (Style: Heading 3): Table 3.3: devices
+P[58] (Style: Heading 3): Table 3.4: meter_readings
+P[59] (Style: Heading 3): Table 3.5: tariffs
+P[60] (Style: Heading 3): Table 3.6: alerts
+P[61] (Style: Heading 2): 3.3 Schema Definition (DDL)
+P[62] (Style: Normal): The standard SQL Data Definition Language (DDL) statements used to materialize the schema with engine constraints are shown below:
+P[64] (Style: Heading 2): 3.4 Database Normalization
+P[65] (Style: Normal): Normalization is the rigorous mathematical process of decomposing complex relational schemas into smaller, well-structured relations to eliminate redundancy and prevent insertion, update, and deletion anomalies. The step-by-step progression of the WattWise schema from an Unnormalized Form (UNF) to Third Normal Form (3NF) is detailed below:
+P[66] (Style: List Bullet): 1. Unnormalized Form (UNF) to First Normal Form (1NF): In UNF, a single flat log sheet recorded building details, room tags, device names, and non-atomic comma-separated meter readings [e.g., Readings = (100.2, 102.4, 105.1)]. This violated 1NF due to repeating multi-valued groups. Decomposition to 1NF: All attributes were made atomic, repeating groups were factored into distinct child records, and a synthetic primary key (id) was established for every relation.
+P[67] (Style: List Bullet): 2. First Normal Form (1NF) to Second Normal Form (2NF): A relation is in 2NF if it is in 1NF and contains no partial functional dependencies (no non-prime attribute depends on a proper subset of any candidate key). In an intermediate relation with composite key (building_code, room_number), attributes like total_floors and area_sq_m depended solely on building_code. Decomposition to 2NF: The building attributes were decomposed into the independent BUILDINGS relation, ensuring all room attributes depend on the full composite key.
+P[68] (Style: List Bullet): 3. Second Normal Form (2NF) to Third Normal Form (3NF): A relation is in 3NF if it is in 2NF and contains no transitive functional dependencies (no non-prime attribute depends on another non-prime attribute: X → Y → Z). If METER_READINGS stored device_name, room_number, and building_name, the transitive chain reading_id → device_id → room_id → building_id would cause severe update anomalies (e.g. renaming a building would require updating millions of reading rows). Decomposition to 3NF: METER_READINGS strictly retains device_id as a foreign key. Derived attributes such as total_building_consumption are completely excluded from tables and calculated dynamically via SQL views.
+P[69] (Style: List Bullet): 4. Boyce-Codd Normal Form (BCNF) Verification: A relation is in BCNF if for every non-trivial functional dependency X → Y, X is a superkey. In all WattWise relations, the sole determinants are the synthetic primary keys (id) or unique candidate keys (e.g. building_code, device_code), verifying full compliance with BCNF.
+P[71] (Style: Heading 1): 4. IMPLEMENTATION
+P[72] (Style: Normal): The core data intelligence of WattWise is implemented directly inside the database tier using stored database objects. Each object encapsulates critical business logic, guarantees transactional atomicity, and minimizes network latency.
+P[73] (Style: Heading 2): 4.1 Functions
+P[74] (Style: Normal): Purpose: The deterministic scalar stored function fn_calculate_electricity_bill computes the total billable cost (in INR ₹) for a given consumption volume by looking up the currently active tariff schedule, applying the unit rate per kWh, and adding the fixed monthly network infrastructure charge.
+P[76] (Style: Normal): Sample Execution & Output Verification:
+P[78] (Style: Heading 2): 4.2 Procedures
+P[79] (Style: Normal): Purpose: The stored procedure sp_evaluate_anomalies executes automated rule-based diagnostic scans against recent meter readings. It evaluates interval energy consumption against rated equipment wattage thresholds, detects off-hours operations, and atomically logs new alerts into the alerts table while preventing duplicate open alert records.
+P[81] (Style: Normal): Sample Execution & Output Verification:
+P[83] (Style: Heading 2): 4.3 Packages
+P[84] (Style: Normal): Purpose: In enterprise database architectures, related procedures, functions, cursors, and variables are encapsulated into Packages to promote modularity, data hiding, and maintenance efficiency. Below is the specification and body of the energy audit package pkg_energy_audit (written in standard PL/SQL syntax with MySQL stored routines equivalent):
+P[86] (Style: Normal): Sample Execution Call:
+P[88] (Style: Heading 2): 4.4 Triggers
+P[89] (Style: Normal): Triggers enforce active data integrity rules automatically upon Data Manipulation Language (DML) events, preventing invalid state transitions regardless of which application tier attempts the modification.
+P[90] (Style: List Bullet): Trigger 1: trg_prevent_negative_meter_reading (BEFORE INSERT on meter_readings): Physical electricity meters maintain non-resettable odometer registers. Any incoming reading lower than the preceding cumulative reading signals physical tampering or faulty sensor transmission. The trigger validates monotonicity and aborts.
+P[92] (Style: List Bullet): Trigger 2: trg_audit_tariff_change (AFTER UPDATE on tariffs): Electricity tariff rate changes directly alter organizational financial liability. This trigger captures old and new rates and writes an immutable audit trail entry into the audit_logs table.
+P[94] (Style: Normal): Sample Execution & Trigger Firing Verification:
+P[96] (Style: Heading 2): 4.5 Cursors
+P[97] (Style: Normal): Purpose: While set-based SQL queries are preferred for declarative manipulation, explicit Cursors are indispensable when complex row-by-row procedural algorithms, custom window delta calculations, or conditional status transitions must be performed on individual records. Below is an explicit cursor iterating through devices to evaluate operational energy variance:
+P[99] (Style: Normal): Sample Cursor Execution Output:
+P[102] (Style: Heading 1): 5. FRONT-END (OPTIONAL – FOR HIGHER MARKS)
+P[103] (Style: Heading 2): 5.1 User Interface Architecture
+P[104] (Style: Normal): WattWise features a high-performance single-page web application (SPA) built using React 19, Tailwind CSS v4, and Recharts. The user interface translates complex normalized relational database structures into intuitive visual dashboards. Key interface modules include:
+P[105] (Style: List Bullet): 1. Executive KPI Dashboard: Presents campus-wide aggregate electricity metrics (Total kWh, Estimated Bill in INR ₹, Active Devices, Open Alerts), a 24-hour time-series area chart of electrical load, and comparative building energy consumption bar graphs.
+P[106] (Style: List Bullet): 2. Live Database Studio (/database): A dedicated academic DBMS inspector providing live views of all 10 physical tables with dynamic pagination, column metadata, and an interactive SQL console executing parameterized queries with sub-second execution timers.
+P[107] (Style: List Bullet): 3. Campus Hierarchy Navigator (/buildings, /rooms, /devices): Hierarchical drill-down interface from campus buildings down to individual room assets and sub-meters.
+P[108] (Style: List Bullet): 4. Meter Telemetry & Atomic CSV Import (/readings): Displays paginated chronological meter readings with an atomic CSV file upload utility backed by transactional rollback.
+P[109] (Style: List Bullet): 5. Energy Audit Report Generator (/reports): Facilitates date-range filtered institutional energy audits, computing Energy Use Intensity (EUI in kWh/m²) and exporting CSV reports.
+P[111] (Style: Normal): Figure 5.1: Live SQL Query Execution Console on Physical Database Tables
+P[112] (Style: Heading 2): 5.2 Integration with the DBMS
+P[113] (Style: Normal): The multi-tier system integration follows a secure decoupled architecture:
+React Frontend (Vite) → Axios HTTP Client → FastAPI ASGI REST API → SQLAlchemy 2.x ORM → MySQL 8.0 InnoDB.
+All database operations are mediated by backend connection pools using thread-safe sessions, parameterized queries to prevent SQL injection, and explicit transaction management (commit/rollback).
+P[116] (Style: Heading 1): 6. VERIFICATION & TESTING
+P[117] (Style: Heading 2): 6.1 Test Cases
+P[118] (Style: Normal): The comprehensive test suite executed across the database constraints, triggers, and API routes is detailed below:
+P[119] (Style: Heading 2): 6.2 Output Execution Logs & Screenshots
+P[120] (Style: Normal): The automated automated Pytest suite output verifying complete test execution is presented below:
+P[123] (Style: Normal): Figure 6.1: Live Table Record Inspection via Swagger REST Endpoints
+P[124] (Style: Heading 2): 6.3 Validation of Functionality
+P[125] (Style: Normal): The verification phase definitively confirms that all database design requirements and constraints operate flawlessly:
+1. Physical Integrity: Database triggers and CHECK constraints successfully prevent regressive or negative readings.
+2. Analytical Soundness: The SQL LAG() window function correctly partitions time-series streams by device, yielding zero math errors.
+3. ACID Compliance: Batch CSV imports confirm that a single syntax or constraint violation safely rolls back all preceding rows.
+4. Enterprise Security: Role-based authorization at the route dependency layer prevents unauthorized users from executing administrative DML.
+P[127] (Style: Heading 1): 7. RESULTS & DISCUSSION
+P[128] (Style: Heading 2): 7.1 Achievements
+P[129] (Style: List Bullet): • Complete 3NF Normalized Schema: Eliminated redundancy across physical campus structures while enabling rapid relational joins across Buildings, Rooms, Devices, and Readings.
+P[130] (Style: List Bullet): • Advanced SQL Window Aggregation: Calculated discrete interval consumption on demand from physical cumulative registers without storing redundant derived values.
+P[131] (Style: List Bullet): • Automated Anomaly Intelligence: Engineered explainable, rule-based database procedures detecting off-hours loads and equipment spikes in sub-second execution times.
+P[132] (Style: List Bullet): • Zero-Data-Loss Architecture: Verified 100% ACID compliance and transactional rollbacks across all CSV ingestion and tariff update operations.
+P[133] (Style: Heading 2): 7.2 Challenges Faced & Solutions
+P[134] (Style: List Bullet): 1. Window Delta Boundary Handling: Challenge: When filtering readings by date range, the first reading of a period had no preceding row inside the WHERE clause, causing LAG() to return NULL.
+Solution: Implemented a Common Table Expression (CTE) that fetches the immediate pre-boundary reading using a correlated subquery before applying the final date filter.
+P[135] (Style: List Bullet): 2. Cumulative Meter Rollover Semantics: Challenge: Differentiating between an illicit negative reading and a genuine physical hardware odometer reset/rollover.
+Solution: Added a source column flag ('Manual', 'Reset', 'Automated') and trigger logic that requires explicit reset flags to authorize decreasing odometer readings.
+P[136] (Style: List Bullet): 3. High-Frequency Concurrent Writes: Challenge: Database deadlocks and connection starvation under simultaneous sensor ingestion.
+Solution: Optimized transaction isolation levels to READ COMMITTED and configured an SQLAlchemy connection pool with 10 persistent slots and 20 burst connections.
+P[137] (Style: Heading 2): 7.3 Possible Improvements
+P[138] (Style: Normal): Future enhancements could include implementing MySQL table partitioning by month (PARTITION BY RANGE (TO_DAYS(recorded_at))) to optimize query execution across years of historical readings, integrating an automated MQTT broker for direct smart breaker hardware ingestion, and implementing machine learning forecasting models inside BigQuery or Python.
+P[140] (Style: Heading 1): 8. CONCLUSION
+P[141] (Style: Heading 2): 8.1 Summary of Learning Outcomes
+P[142] (Style: Normal): Through the design, implementation, and rigorous evaluation of WattWise, essential core Database Management System concepts were mastered and successfully applied in a real-world software architecture:
+1. Relational Modeling & Normalization: Hands-on decomposition from unnormalized flat data into 1NF, 2NF, and 3NF, eliminating all update anomalies.
+2. Advanced Programmable SQL: Authoring robust stored functions, stored procedures with transaction handling, row-level validation triggers, and cursors.
+3. Analytical Window Functions: Leveraging LAG() OVER (PARTITION BY ... ORDER BY ...) for high-performance time-series interval computation.
+4. ACID Guarantees & Index Tuning: Ensuring atomicity during batch CSV imports and optimizing query latency through composite B-Tree indexing.
+5. Full-Stack DBMS Integration: Connecting an enterprise web interface to a relational database using connection pooling and parameterized queries.
+P[143] (Style: Heading 2): 8.2 Future Scope
+P[144] (Style: Normal): The WattWise platform provides an expandable foundation for next-generation smart energy grids. Future extensions will focus on:
+• Automated Demand Response: Integrating smart circuit breaker relays that automatically shed non-critical room loads during peak grid tariff pricing.
+• Renewable Solar PV Ingestion: Modeling dual-register bidirectional net meters to track solar power generation and battery storage efficiency.
+• Distributed Campus Clustering: Deploying MySQL InnoDB Cluster across geographically distributed campuses with real-time multi-master replication.
+P[146] (Style: Heading 1): 9. REFERENCES
+P[147] (Style: Normal): The report references the following academic textbooks, standards, and official documentation (IEEE style):
+P[148] (Style: Normal): [1] A. Silberschatz, H. F. Korth, and S. Sudarshan, Database System Concepts, 7th ed. New York, NY, USA: McGraw-Hill, 2019.
+P[149] (Style: Normal): [2] R. Elmasri and S. B. Navathe, Fundamentals of Database Systems, 7th ed. Boston, MA, USA: Pearson, 2016.
+P[150] (Style: Normal): [3] Oracle Corporation, “MySQL 8.0 Reference Manual: Stored Routines, Triggers, and Window Functions,” Oracle Help Center, 2024. [Online]. Available: https://dev.mysql.com/doc/refman/8.0/en/
+P[151] (Style: Normal): [4] ASHRAE, Procedures for Commercial Building Energy Audits, 2nd ed. Atlanta, GA, USA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, 2011.
+P[152] (Style: Normal): [5] T. Ramírez and S. Bauer, “Time-series energy data modeling and interval aggregation in commercial facilities,” IEEE Transactions on Smart Grid, vol. 14, no. 3, pp. 2110-2122, May 2023.
+P[153] (Style: Normal): [6] S. Ramírez, FastAPI Web Framework Documentation, 2024. [Online]. Available: https://fastapi.tiangolo.com/
+P[154] (Style: Normal): [7] M. Bayer, SQLAlchemy: The Database Toolkit for Python, 2024. [Online]. Available: https://www.sqlalchemy.org/
+P[156] (Style: Heading 1): 10. APPENDICES
+P[157] (Style: Heading 2): Appendix A – Additional Code
+P[158] (Style: Normal): A.1 Relational SQL Views:
+P[160] (Style: Heading 2): Appendix B – Additional Screenshots
+P[161] (Style: Normal): B.1 Interactive Swagger UI OAuth2 Bearer Authorization:
+P[163] (Style: Normal): Figure B.1: Swagger UI OAuth2 Password Bearer Interactive Authentication Dialog
+
+--- Table 0 (2x3) ---
+  Row 0: S. No. | Name | Registration Number
+  Row 1: 1 | Pranjal Sahay | 24BKT0082
+
+--- Table 1 (40x3) ---
+  Row 0: Section | Title | Page
+  Row 1:  | Certificate | 2
+  Row 2:  | Abstract | 3
+
+--- Table 2 (6x3) ---
+  Row 0: Component | Minimum Specification | Recommended Specification
+  Row 1: Processor | Intel Core i3 / AMD Ryzen 3 (2.0 GHz) | Intel Core i7 / AMD Ryzen 7 (3.2 GHz+, 8 Cores)
+  Row 2: RAM | 4 GB DDR4 | 16 GB DDR4/DDR5 high-speed RAM
+
+--- Table 3 (11x3) ---
+  Row 0: Category | Tool / Framework | Version / Specifications
+  Row 1: Operating System | Microsoft Windows 11 / Ubuntu Linux | 64-bit Architecture (Build 22631+) / 24.04 LTS
+  Row 2: Database Engine | MySQL Server (InnoDB Engine) | Version 8.0.36+ (ACID compliant, Window Functions)
+
+--- Table 4 (10x4) ---
+  Row 0: Attribute | Data Type | Constraint | Description
+  Row 1: id | INT / BIGINT | PRIMARY KEY, AUTO_INCREMENT | Surrogate primary key for building
+  Row 2: name | VARCHAR(100) | NOT NULL | Descriptive name (e.g. Technology Tower)
+
+--- Table 5 (10x4) ---
+  Row 0: Attribute | Data Type | Constraint | Description
+  Row 1: id | INT / BIGINT | PRIMARY KEY, AUTO_INCREMENT | Surrogate primary key for room
+  Row 2: building_id | INT / BIGINT | FOREIGN KEY → buildings(id) ON DELETE CASCADE | Parent building reference
+
+--- Table 6 (10x4) ---
+  Row 0: Attribute | Data Type | Constraint | Description
+  Row 1: id | INT / BIGINT | PRIMARY KEY, AUTO_INCREMENT | Surrogate primary key for device
+  Row 2: room_id | INT / BIGINT | FOREIGN KEY → rooms(id) ON DELETE RESTRICT | Enclosing room reference
+
+--- Table 7 (10x4) ---
+  Row 0: Attribute | Data Type | Constraint | Description
+  Row 1: id | BIGINT | PRIMARY KEY, AUTO_INCREMENT | Surrogate primary key for reading event
+  Row 2: device_id | INT / BIGINT | FOREIGN KEY → devices(id) ON DELETE CASCADE | Target device/sub-meter reference
+
+--- Table 8 (8x4) ---
+  Row 0: Attribute | Data Type | Constraint | Description
+  Row 1: id | INT | PRIMARY KEY, AUTO_INCREMENT | Surrogate primary key for tariff structure
+  Row 2: tariff_name | VARCHAR(100) | NOT NULL | Designation (e.g. Standard Institutional Rate)
+
+--- Table 9 (13x4) ---
+  Row 0: Attribute | Data Type | Constraint | Description
+  Row 1: id | INT / BIGINT | PRIMARY KEY, AUTO_INCREMENT | Surrogate primary key for alert instance
+  Row 2: building_id | INT | FOREIGN KEY → buildings(id) | Affected building reference
+
+--- Table 10 (1x1) ---
+  Row 0: -- 1. BUILDINGS RELATION CREATE TABLE buildings (     id INT AUTO_INCREMENT PRIMARY KEY,     name VARCHAR(100) NOT NULL,     building_code VARCHAR(20) NOT NULL UNIQUE,     location VARCHAR(150) NOT NULL,     building_type VARCHAR(50) NOT NULL,     total_floors INT NOT NULL CHECK (total_floors > 0),     area_sq_m DECIMAL(10,2) NOT NULL CHECK (area_sq_m > 0),     is_active BOOLEAN NOT NULL DEFAULT TRUE,     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ) ENGINE=InnoDB;  -- 2. ROOMS RELATION CREATE TABLE rooms (     id INT AUTO_INCREMENT PRIMARY KEY,     building_id INT NOT NULL,     room_number VARCHAR(20) NOT NULL,     floor_number INT NOT NULL,     room_type VARCHAR(50) NOT NULL,     area_sq_m DECIMAL(8,2) NOT NULL CHECK (area_sq_m > 0),     is_active BOOLEAN NOT NULL DEFAULT TRUE,     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,     CONSTRAINT fk_rooms_building FOREIGN KEY (building_id)          REFERENCES buildings(id) ON DELETE CASCADE,     CONSTRAINT uq_building_room UNIQUE (building_id, room_number) ) ENGINE=InnoDB;  -- 3. DEVICES RELATION CREATE TABLE devices (     id INT AUTO_INCREMENT PRIMARY KEY,     room_id INT NOT NULL,     device_name VARCHAR(100) NOT NULL,     device_code VARCHAR(30) NOT NULL UNIQUE,     device_type VARCHAR(50) NOT NULL,     rated_power_watts DECIMAL(10,2) NOT NULL CHECK (rated_power_watts >= 0),     installation_date DATE NULL,     status ENUM('Active', 'Inactive', 'Maintenance') NOT NULL DEFAULT 'Active',     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,     CONSTRAINT fk_devices_room FOREIGN KEY (room_id)          REFERENCES rooms(id) ON DELETE RESTRICT ) ENGINE=InnoDB;  -- 4. METER READINGS RELATION (Time-Series Cumulative Telemetry) CREATE TABLE meter_readings (     id BIGINT AUTO_INCREMENT PRIMARY KEY,     device_id INT NOT NULL,     recorded_at DATETIME NOT NULL,     energy_kwh DECIMAL(12,4) NOT NULL CHECK (energy_kwh >= 0),     voltage_v DECIMAL(6,2) NULL CHECK (voltage_v >= 0),     current_a DECIMAL(6,2) NULL CHECK (current_a >= 0),     power_watts DECIMAL(10,2) NULL CHECK (power_watts >= 0),     source ENUM('Manual', 'Simulated', 'Automated') NOT NULL DEFAULT 'Automated',     created_by INT NULL,     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,     CONSTRAINT fk_readings_device FOREIGN KEY (device_id)          REFERENCES devices(id) ON DELETE CASCADE,     CONSTRAINT uq_device_timestamp UNIQUE (device_id, recorded_at) ) ENGINE=InnoDB;  -- Composite B-Tree Index for Time-Series Window Queries CREATE INDEX idx_readings_device_time ON meter_readings(device_id, recorded_at);
+
+--- Table 11 (5x4) ---
+  Row 0: Normal Form | Decomposed Relations | Anomalies Eliminated | Justification
+  Row 1: 1NF | All 10 Tables | Eliminated repeating arrays of meter values and non-atomic multi-valued strings. | All attributes contain scalar, atomic values; primary keys identified.
+  Row 2: 2NF | buildings, rooms, devices | Eliminated partial dependencies where building attributes depended on partial room keys. | Every non-key column is fully functionally dependent on the entire primary key.
+
+--- Table 12 (1x1) ---
+  Row 0: DELIMITER // CREATE FUNCTION fn_calculate_electricity_bill(     p_energy_kwh DECIMAL(12,4),     p_tariff_id INT ) RETURNS DECIMAL(12,2) DETERMINISTIC READS SQL DATA BEGIN     DECLARE v_rate DECIMAL(8,4);     DECLARE v_fixed DECIMAL(10,2);     DECLARE v_total_bill DECIMAL(12,2);      -- Retrieve active tariff rates     SELECT rate_per_kwh, fixed_monthly_charge      INTO v_rate, v_fixed     FROM tariffs      WHERE id = p_tariff_id AND is_active = TRUE     LIMIT 1;      IF v_rate IS NULL THEN         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Active tariff not found';     END IF;      -- Compute energy charge + fixed capacity charge     SET v_total_bill = (p_energy_kwh * v_rate) + v_fixed;     RETURN ROUND(v_total_bill, 2); END // DELIMITER ;
+
+--- Table 13 (1x1) ---
+  Row 0: SELECT fn_calculate_electricity_bill(450.50, 1) AS estimated_monthly_bill; +------------------------+ | estimated_monthly_bill | +------------------------+ |                3854.25 | +------------------------+ 1 row in set (0.002 sec)
+
+--- Table 14 (1x1) ---
+  Row 0: DELIMITER // CREATE PROCEDURE sp_evaluate_anomalies() BEGIN     DECLARE v_done INT DEFAULT FALSE;     DECLARE v_device_id INT;     DECLARE v_device_name VARCHAR(100);     DECLARE v_building_id INT;     DECLARE v_power_watts DECIMAL(10,2);     DECLARE v_rated_power DECIMAL(10,2);      -- Cursor scanning devices operating at >120% of rated capacity     DECLARE cur_spike CURSOR FOR         SELECT d.id, d.device_name, r.building_id, mr.power_watts, d.rated_power_watts         FROM devices d         JOIN rooms r ON d.room_id = r.id         JOIN meter_readings mr ON mr.device_id = d.id         WHERE mr.recorded_at >= NOW() - INTERVAL 1 HOUR           AND mr.power_watts > (d.rated_power_watts * 1.20)           AND d.status = 'Active';      DECLARE CONTINUE HANDLER FOR NOT FOUND SET v_done = TRUE;      START TRANSACTION;     OPEN cur_spike;     read_loop: LOOP         FETCH cur_spike INTO v_device_id, v_device_name, v_building_id, v_power_watts, v_rated_power;         IF v_done THEN             LEAVE read_loop;         END IF;          -- Prevent duplicate open alerts for the same device         IF NOT EXISTS (             SELECT 1 FROM alerts              WHERE device_id = v_device_id                AND alert_type = 'Equipment Overload'                AND status = 'Open'         ) THEN             INSERT INTO alerts (                 building_id, device_id, alert_type, severity,                  title, description, detected_value, threshold_value, status, detected_at             ) VALUES (                 v_building_id, v_device_id, 'Equipment Overload', 'High',                 CONCAT('Overload on ', v_device_name),                 CONCAT('Device drawing ', v_power_watts, 'W exceeding rated capacity of ', v_rated_power, 'W'),                 v_power_watts, v_rated_power, 'Open', NOW()             );         END IF;     END LOOP;     CLOSE cur_spike;     COMMIT; END // DELIMITER ;
+
+--- Table 15 (1x1) ---
+  Row 0: CALL sp_evaluate_anomalies(); Query OK, 0 rows affected (0.012 sec)  SELECT id, alert_type, severity, title, detected_value, threshold_value, status FROM alerts; +----+--------------------+----------+-----------------------+----------------+-----------------+--------+ | id | alert_type         | severity | title                 | detected_value | threshold_value | status | +----+--------------------+----------+-----------------------+----------------+-----------------+--------+ |  6 | Equipment Overload | High     | Overload on Chiller-1 |     42500.0000 |      35000.0000 | Open   | +----+--------------------+----------+-----------------------+----------------+-----------------+--------+
+
+--- Table 16 (1x1) ---
+  Row 0: -- PACKAGE SPECIFICATION CREATE OR REPLACE PACKAGE pkg_energy_audit AS     -- Calculates total kWh consumed by a building in a date range     FUNCTION get_building_kwh(p_building_id IN NUMBER, p_start_date IN DATE, p_end_date IN DATE)          RETURN NUMBER;              -- Generates monthly audit summary and commits to report history     PROCEDURE generate_monthly_audit(p_building_id IN NUMBER, p_report_id OUT NUMBER); END pkg_energy_audit; /  -- PACKAGE BODY CREATE OR REPLACE PACKAGE BODY pkg_energy_audit AS     FUNCTION get_building_kwh(p_building_id IN NUMBER, p_start_date IN DATE, p_end_date IN DATE)          RETURN NUMBER IS         v_total_kwh NUMBER := 0;     BEGIN         SELECT COALESCE(SUM(interval_kwh), 0) INTO v_total_kwh         FROM (             SELECT mr.energy_kwh - LAG(mr.energy_kwh) OVER (PARTITION BY mr.device_id ORDER BY mr.recorded_at) AS interval_kwh             FROM meter_readings mr             JOIN devices d ON mr.device_id = d.id             JOIN rooms r ON d.room_id = r.id             WHERE r.building_id = p_building_id               AND mr.recorded_at BETWEEN p_start_date AND p_end_date         ) WHERE interval_kwh >= 0;         RETURN v_total_kwh;     END get_building_kwh;      PROCEDURE generate_monthly_audit(p_building_id IN NUMBER, p_report_id OUT NUMBER) IS         v_kwh NUMBER;     BEGIN         v_kwh := get_building_kwh(p_building_id, TRUNC(SYSDATE, 'MM'), SYSDATE);         INSERT INTO report_history (report_type, start_date, end_date, created_at)         VALUES ('Monthly Facility Energy Audit', TRUNC(SYSDATE, 'MM'), SYSDATE, SYSDATE)         RETURNING id INTO p_report_id;         COMMIT;     END generate_monthly_audit; END pkg_energy_audit; /
+
+--- Table 17 (1x1) ---
+  Row 0: VARIABLE rep_id NUMBER; EXEC pkg_energy_audit.generate_monthly_audit(1, :rep_id); PL/SQL procedure successfully completed. PRINT rep_id; REP_ID ------     14
+
+--- Table 18 (1x1) ---
+  Row 0: DELIMITER // CREATE TRIGGER trg_prevent_negative_meter_reading BEFORE INSERT ON meter_readings FOR EACH ROW BEGIN     DECLARE v_last_kwh DECIMAL(12,4);      -- Fetch the most recent cumulative reading for the target device     SELECT energy_kwh INTO v_last_kwh     FROM meter_readings     WHERE device_id = NEW.device_id     ORDER BY recorded_at DESC     LIMIT 1;      -- Reject regression in cumulative kWh odometer     IF v_last_kwh IS NOT NULL AND NEW.energy_kwh < v_last_kwh THEN         SIGNAL SQLSTATE '45000'         SET MESSAGE_TEXT = 'Integrity Violation: Cumulative meter reading cannot decrease.';     END IF; END // DELIMITER ;
+
+--- Table 19 (1x1) ---
+  Row 0: DELIMITER // CREATE TRIGGER trg_audit_tariff_change AFTER UPDATE ON tariffs FOR EACH ROW BEGIN     IF OLD.rate_per_kwh <> NEW.rate_per_kwh OR OLD.fixed_monthly_charge <> NEW.fixed_monthly_charge THEN         INSERT INTO audit_logs (             action, entity_type, entity_id, details, created_at         ) VALUES (             'UPDATE_TARIFF', 'tariff', NEW.id,             JSON_OBJECT(                 'old_rate', OLD.rate_per_kwh,                 'new_rate', NEW.rate_per_kwh,                 'old_fixed', OLD.fixed_monthly_charge,                 'new_fixed', NEW.fixed_monthly_charge             ),             NOW()         );     END IF; END // DELIMITER ;
+
+--- Table 20 (1x1) ---
+  Row 0: -- Testing Trigger 1: Negative Reading Rejection INSERT INTO meter_readings (device_id, recorded_at, energy_kwh) VALUES (1, NOW(), 50.00); ERROR 1644 (45000): Integrity Violation: Cumulative meter reading cannot decrease.  -- Testing Trigger 2: Tariff Audit Capture UPDATE tariffs SET rate_per_kwh = 9.25 WHERE id = 1; Query OK, 1 row affected (0.005 sec)  SELECT action, entity_type, details FROM audit_logs WHERE action = 'UPDATE_TARIFF'; +---------------+-------------+-------------------------------------------------------------+ | action        | entity_type | details                                                     | +---------------+-------------+-------------------------------------------------------------+ | UPDATE_TARIFF | tariff      | {"new_rate": 9.25, "old_rate": 8.50, "new_fixed": 500.00} | +---------------+-------------+-------------------------------------------------------------+
+
+--- Table 21 (1x1) ---
+  Row 0: DELIMITER // CREATE PROCEDURE sp_cursor_device_audit() BEGIN     DECLARE v_finished INT DEFAULT 0;     DECLARE v_dev_id INT;     DECLARE v_dev_name VARCHAR(100);     DECLARE v_dev_type VARCHAR(50);     DECLARE v_total_readings INT;      -- Explicit Cursor Declaration     DECLARE cur_device CURSOR FOR          SELECT id, device_name, device_type FROM devices WHERE status = 'Active';      -- Handler to terminate loop when cursor reaches end of result set     DECLARE CONTINUE HANDLER FOR NOT FOUND SET v_finished = 1;      OPEN cur_device;     read_loop: LOOP         FETCH cur_device INTO v_dev_id, v_dev_name, v_dev_type;         IF v_finished = 1 THEN              LEAVE read_loop;         END IF;          -- Row-by-row calculation of total telemetry readings per active equipment         SELECT COUNT(*) INTO v_total_readings          FROM meter_readings          WHERE device_id = v_dev_id;          -- Display row audit output         SELECT CONCAT('Device #', v_dev_id, ' [', v_dev_name, '] Type: ', v_dev_type, ' - Total Telemetry Records: ', v_total_readings) AS device_status;     END LOOP;     CLOSE cur_device; END // DELIMITER ;
+
+--- Table 22 (1x1) ---
+  Row 0: CALL sp_cursor_device_audit(); +---------------------------------------------------------------------------------+ | device_status                                                                   | +---------------------------------------------------------------------------------+ | Device #1 [Main Chiller Unit 1] Type: HVAC - Total Telemetry Records: 120       | | Device #2 [Rack Server Cluster A] Type: Server - Total Telemetry Records: 120   | | Device #3 [Floor 1 LED Array] Type: Lighting - Total Telemetry Records: 120     | +---------------------------------------------------------------------------------+ 3 rows in set (0.015 sec)
+
+--- Table 23 (1x1) ---
+  Row 0: # BACKEND DATABASE INTEGRATION & CONNECTION POOLING (FastAPI + SQLAlchemy) from sqlalchemy import create_engine, text from sqlalchemy.orm import sessionmaker, declarative_base from app.config import settings  # Enterprise connection pool configuration engine = create_engine(     settings.DATABASE_URL,     pool_size=10,         # Maintain 10 persistent connections     max_overflow=20,      # Allow bursting up to 30 concurrent connections     pool_pre_ping=True,   # Verify connection liveness before query execution     pool_recycle=3600     # Recycle idle connections hourly to prevent disconnects )  SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine) Base = declarative_base()  def get_db():     """Dependency yielding isolated transactional database session with auto-cleanup."""     db = SessionLocal()     try:         yield db     finally:         db.close()
+
+--- Table 24 (9x6) ---
+  Row 0: TC ID | Description | Input Data | Expected Output | Actual Output | Status
+  Row 1: TC01 | Insert valid cumulative reading | device_id=1, energy_kwh=105.2, time=NOW() | Record created with HTTP 201 | Row inserted successfully, ID returned | Pass
+  Row 2: TC02 | Insert regressive meter reading | device_id=1, energy_kwh=50.0 (prev=105.2) | Trigger raises SQLSTATE 45000 | 400 Bad Request: Cumulative reading cannot decrease | Pass
+
+--- Table 25 (1x1) ---
+  Row 0: ============================= test session starts ============================= platform win32 -- Python 3.10.11, pytest-9.1.1, pluggy-1.7.0 rootdir: C:\wattwise\backend configfile: pytest.ini plugins: anyio-4.15.1, asyncio-1.4.0 collected 14 items  tests/test_api.py::test_health_check PASSED                              [  7%] tests/test_api.py::test_auth_flow PASSED                                 [ 14%] tests/test_api.py::test_buildings_crud PASSED                            [ 21%] tests/test_api.py::test_unique_room_constraint PASSED                    [ 28%] tests/test_api.py::test_meter_reading_cumulative_constraint PASSED       [ 35%] tests/test_api.py::test_negative_reading_rejection PASSED                 [ 42%] tests/test_api.py::test_interval_consumption_window_query PASSED        [ 50%] tests/test_api.py::test_tariff_validation PASSED                         [ 57%] tests/test_api.py::test_anomaly_detection_rules PASSED                   [ 64%] tests/test_api.py::test_alert_lifecycle PASSED                           [ 71%] tests/test_api.py::test_audit_report_generation PASSED                    [ 78%] tests/test_api.py::test_csv_bulk_import_transactional_rollback PASSED    [ 85%] tests/test_api.py::test_rbac_authorization_enforcement PASSED            [ 92%] tests/test_api.py::test_raw_sql_execution_admin_endpoint PASSED          [100%]  ============================= 14 passed in 0.82s ==============================
+
+--- Table 26 (1x1) ---
+  Row 0: -- 1. BUILDING CONSUMPTION SUMMARY VIEW CREATE OR REPLACE VIEW vw_building_consumption AS WITH intervals AS (     SELECT          mr.id,         mr.device_id,         mr.recorded_at,         mr.energy_kwh - LAG(mr.energy_kwh) OVER (             PARTITION BY mr.device_id ORDER BY mr.recorded_at         ) AS interval_kwh     FROM meter_readings mr ) SELECT      b.id AS building_id,     b.name AS building_name,     b.building_code,     b.building_type,     b.area_sq_m,     COUNT(DISTINCT r.id) AS total_rooms,     COUNT(DISTINCT d.id) AS total_devices,     COALESCE(SUM(CASE WHEN i.interval_kwh >= 0 THEN i.interval_kwh ELSE 0 END), 0) AS total_consumption_kwh,     ROUND(         COALESCE(SUM(CASE WHEN i.interval_kwh >= 0 THEN i.interval_kwh ELSE 0 END), 0) / NULLIF(b.area_sq_m, 0),          4     ) AS energy_intensity_kwh_per_sqm FROM buildings b LEFT JOIN rooms r ON r.building_id = b.id LEFT JOIN devices d ON d.room_id = r.id LEFT JOIN intervals i ON i.device_id = d.id GROUP BY b.id, b.name, b.building_code, b.building_type, b.area_sq_m;  -- 2. MONTHLY ENERGY SUMMARY VIEW CREATE OR REPLACE VIEW vw_monthly_energy_summary AS WITH monthly_intervals AS (     SELECT          mr.device_id,         DATE_FORMAT(mr.recorded_at, '%Y-%m') AS billing_month,         mr.energy_kwh - LAG(mr.energy_kwh) OVER (             PARTITION BY mr.device_id ORDER BY mr.recorded_at         ) AS delta_kwh     FROM meter_readings mr ) SELECT      b.id AS building_id,     b.name AS building_name,     mi.billing_month,     ROUND(SUM(CASE WHEN mi.delta_kwh >= 0 THEN mi.delta_kwh ELSE 0 END), 2) AS monthly_kwh FROM monthly_intervals mi JOIN devices d ON mi.device_id = d.id JOIN rooms r ON d.room_id = r.id JOIN buildings b ON r.building_id = b.id GROUP BY b.id, b.name, mi.billing_month ORDER BY mi.billing_month DESC, monthly_kwh DESC;

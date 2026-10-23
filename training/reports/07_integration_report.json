@@ -1,0 +1,9 @@
+{
+  "status": "COMPLETED",
+  "timestamp": "2026-10-23 18:30:31",
+  "adapter_source": "training\\checkpoints\\best_adapter",
+  "merged_model_dir": "training\\merged_model",
+  "ollama_model_name": "schedulai-tuned:latest",
+  "rollback_target": "schedulai:latest",
+  "env_updated": true
+}

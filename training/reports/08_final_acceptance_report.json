@@ -1,0 +1,32 @@
+{
+  "pytest": {
+    "passed": true,
+    "output_summary": "72 passed, 1 warning in 18.75s"
+  },
+  "scheduling_engine": {
+    "fcfs_correct": true,
+    "avg_wt": 2.6667,
+    "avg_tat": 5.3333
+  },
+  "live_chat": [
+    {
+      "query": "What is Round Robin?",
+      "status": 200,
+      "elapsed_seconds": 0.14,
+      "response_preview": "Imagine several people need to share one computer. How could we make sure nobody occupies it for too long and everyone g..."
+    },
+    {
+      "query": "I don't know anything about it.",
+      "status": 200,
+      "elapsed_seconds": 0.08,
+      "response_preview": "No problem. Let's start with a simple example. Imagine you're doing a task and someone asks you to pause it so they can ..."
+    },
+    {
+      "query": "Just give me the formula for waiting time directly.",
+      "status": 200,
+      "elapsed_seconds": 0.05,
+      "response_preview": "Here is the standard formula for **Waiting Time (WT)** in CPU scheduling:\n\n$$\\text{Waiting Time (WT)} = \\text{Turnaround..."
+    }
+  ],
+  "frontend_intact": true
+}

@@ -1,0 +1,43 @@
+{
+  "status": "COMPLETED",
+  "timestamp": "2026-10-23 18:25:05",
+  "base_model": "training\\base_model",
+  "adapter_type": "LoRA (r=16, alpha=32, target_modules=all_projections)",
+  "epochs": 1,
+  "total_optimization_steps": 40,
+  "training_time_seconds": 405.38,
+  "initial_val_loss": 2.9578,
+  "best_val_loss": 0.2669,
+  "final_checkpoint": "training\\checkpoints\\schedulai_lora_final",
+  "best_checkpoint": "training\\checkpoints\\best_adapter",
+  "loss_history": [
+    {
+      "step": 10,
+      "train_loss": 1.1801,
+      "val_loss": 1.0597,
+      "lr": 0.0002799038105676658,
+      "elapsed_seconds": 96.6
+    },
+    {
+      "step": 20,
+      "train_loss": 0.1581,
+      "val_loss": 0.4771,
+      "lr": 0.00017604722665003956,
+      "elapsed_seconds": 191.7
+    },
+    {
+      "step": 30,
+      "train_loss": 0.1911,
+      "val_loss": 0.3109,
+      "lr": 5.358185854701909e-05,
+      "elapsed_seconds": 287.8
+    },
+    {
+      "step": 40,
+      "train_loss": 0.1439,
+      "val_loss": 0.2669,
+      "lr": 0.0,
+      "elapsed_seconds": 393.8
+    }
+  ]
+}

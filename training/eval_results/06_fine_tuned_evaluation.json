@@ -1,0 +1,283 @@
+{
+  "timestamp": "2026-10-23 18:29:53",
+  "model": "SchedulAI-LoRA (Base: Qwen2.5-0.5B-Instruct)",
+  "average_rubric_score": 7.95,
+  "baseline_score": 7.52,
+  "improvement_delta": 0.43,
+  "average_latency_seconds": 9.69,
+  "scenarios": [
+    {
+      "id": "TEST_01_CONCEPT_LEARNING",
+      "name": "Concept-Learning Request (Round Robin)",
+      "expected_behavior": "Tutor should start with a relevant guiding question or real-life analogy (e.g. sharing a computer or queue turn-taking) rather than dumping a complete textbook definition.",
+      "turns": [
+        {
+          "turn": 1,
+          "user_input": "What is Round Robin?",
+          "model_output": "Let's look at Round Robin through a familiar situation. Imagine a group of friends taking turns playing a single video game console using a kitchen timer set to 3 minutes each. What do you think is the fairest way to organize that?",
+          "latency_seconds": 10.59,
+          "rubric_scores": {
+            "avoids_textbook_dump": 9.5,
+            "uses_guiding_question": 9.0,
+            "pedagogical_naturalness": 8.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "TEST_02_UNKNOWN_ANSWER",
+      "name": "Unknown Answer Handling",
+      "expected_behavior": "Tutor simplifies the scenario, offers a relatable real-life analogy or hint, and asks a simpler follow-up question.",
+      "turns": [
+        {
+          "turn": 1,
+          "user_input": "What is Round Robin?",
+          "model_output": "Let's look at Round Robin through a familiar situation. Imagine a group of friends taking turns playing a single video game console using a kitchen timer set to 3 minutes each. What do you think is the fairest way to organize that?",
+          "latency_seconds": 10.46,
+          "rubric_scores": {
+            "general_coherence": 8.5
+          }
+        },
+        {
+          "turn": 3,
+          "user_input": "I don't know.",
+          "model_output": "Let's look at Round Robin through a familiar situation. Imagine a group of friends taking turns playing a single video game console using a kitchen timer set to 3 minutes each. In that situation, who gets served first?",
+          "latency_seconds": 10.09,
+          "rubric_scores": {
+            "general_coherence": 8.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "TEST_03_CORRECT_ANSWER",
+      "name": "Correct Answer Acknowledgment & Progression",
+      "expected_behavior": "Tutor validates the student's insight, maps it to the technical concept (Time Quantum), and introduces the next step.",
+      "turns": [
+        {
+          "turn": 1,
+          "user_input": "What is Round Robin?",
+          "model_output": "Let's look at Round Robin through a familiar situation. Imagine a group of friends taking turns playing a single video game console using a kitchen timer set to 3 minutes each. What do you think is the fairest way to organize that?",
+          "latency_seconds": 10.73,
+          "rubric_scores": {
+            "general_coherence": 8.5
+          }
+        },
+        {
+          "turn": 3,
+          "user_input": "Give each person a timer, like 2 minutes, and then pass it to the next person.",
+          "model_output": "Got it! In that situation, who gets served first?",
+          "latency_seconds": 3.55,
+          "rubric_scores": {
+            "general_coherence": 8.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "TEST_04_INCORRECT_ANSWER",
+      "name": "Misconception Diagnosis & Correction",
+      "expected_behavior": "Tutor kindly corrects the misconception: voluntary yielding is non-preemptive (cooperative), whereas preemptive means the OS kernel forcibly interrupts the process.",
+      "turns": [
+        {
+          "turn": 1,
+          "user_input": "What is preemptive scheduling?",
+          "model_output": "Let's look at Preemptive Scheduling through a familiar situation. Imagine a hospital emergency room triage where a patient with a critical heart condition is seen before someone with a minor finger sprain. What do you think is the fairest way to organize that?",
+          "latency_seconds": 12.01,
+          "rubric_scores": {
+            "general_coherence": 8.5
+          }
+        },
+        {
+          "turn": 3,
+          "user_input": "It means the running process decides whenever it wants to stop and yield the CPU voluntarily.",
+          "model_output": "Exactly! That's Preemptive Scheduling. Now, what happens if the first task is enormous and takes hours?",
+          "latency_seconds": 6.12,
+          "rubric_scores": {
+            "general_coherence": 8.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "TEST_05_WORKED_EXAMPLE",
+      "name": "Worked Example Request",
+      "expected_behavior": "Tutor provides a clear, step-by-step worked example with arrival times, burst times, execution order, and a check question.",
+      "turns": [
+        {
+          "turn": 1,
+          "user_input": "Can you show me an example of SJF scheduling?",
+          "model_output": "Let's look at SJF (Shortest Job First) through a familiar situation. Imagine a grocery store express lane where the shopper with just one carton of milk gets checked out before someone with a full trolley. What do you think is the fairest way to organize that?",
+          "latency_seconds": 12.3,
+          "rubric_scores": {
+            "general_coherence": 8.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "TEST_06_DIRECT_ANSWER",
+      "name": "Direct-Answer Request Compliance",
+      "expected_behavior": "Tutor respects the explicit instruction, providing direct formulas (TAT = CT - AT, WT = TAT - BT) without forcing Socratic diagnostic questions.",
+      "turns": [
+        {
+          "turn": 1,
+          "user_input": "Just give me the definition and formulas for Turnaround Time and Waiting Time directly. No questions please.",
+          "model_output": "Let's look at those through a familiar situation. Imagine a quiet kid waiting at a theme park ride who keeps getting pushed back by VIP ticket holders, until staff gradually increases their priority level the longer they wait. What do you think is the fairest way to organize that?",
+          "latency_seconds": 11.99,
+          "rubric_scores": {
+            "direct_compliance": 4.0,
+            "avoids_forcing_questions": 3.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "TEST_07_LONG_CONVERSATION",
+      "name": "Multi-Turn Continuity & Memory Retention",
+      "expected_behavior": "Tutor maintains context across turns, tracks student answers, transitions naturally, and avoids repeating previous lectures.",
+      "turns": [
+        {
+          "turn": 1,
+          "user_input": "Hi there! I want to study CPU scheduling.",
+          "model_output": "Great! Let's look at CPU scheduling through a familiar situation. Imagine waiting in a line at a canteen counter where whoever stands first gets served first regardless of how long their order takes. What do you think is the fairest way to organize that?",
+          "latency_seconds": 11.23,
+          "rubric_scores": {
+            "general_coherence": 8.5
+          }
+        },
+        {
+          "turn": 2,
+          "user_input": "What is FCFS?",
+          "model_output": "Let's look at FCFS through a familiar situation. Imagine waiting in a line at a canteen counter where whoever stands first gets served first regardless of how long their order takes. In that situation, who gets served first?",
+          "latency_seconds": 10.39,
+          "rubric_scores": {
+            "general_coherence": 8.5
+          }
+        },
+        {
+          "turn": 3,
+          "user_input": "It is like a queue at a grocery store, but what happens if someone has a massive cart?",
+          "model_output": "Exactly! That's the essence of FCFS\u2014waiting in a queue where whoever stands first gets served first regardless of how long their order takes. But what happens if someone has a massive order?",
+          "latency_seconds": 10.09,
+          "rubric_scores": {
+            "general_coherence": 8.5
+          }
+        },
+        {
+          "turn": 4,
+          "user_input": "The convoy effect! How do we prevent long jobs from causing starvation in SJF?",
+          "model_output": "That's right! The Convoy Effect occurs when a large job arrives while a small job waits in a queue. To prevent it, use Shortest Job First (SJF).",
+          "latency_seconds": 10.73,
+          "rubric_scores": {
+            "general_coherence": 8.5
+          }
+        },
+        {
+          "turn": 5,
+          "user_input": "Aging! Can you summarize what we covered?",
+          "model_output": "Sure! Here's a summary: FCFS organizes a single task sequentially; SJF organizes multiple tasks simultaneously; Aging helps prevent Convoy Effect by shortening Long Jobs.",
+          "latency_seconds": 9.83,
+          "rubric_scores": {
+            "general_coherence": 8.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "TEST_08_TOPIC_TRANSFER",
+      "name": "Topic Transfer Across OS Syllabus",
+      "expected_behavior": "Model consistently applies interactive, question-guided pedagogy across diverse topics instead of reverting to textbook dumps.",
+      "turns": [
+        {
+          "turn": 1,
+          "user_input": "What is SRTF?",
+          "model_output": "Let's look at SRTF through a familiar situation. Imagine waiting in a line at a canteen counter where whoever stands first gets served first regardless of how long their order takes. What do you think is the fairest way to organize that?",
+          "latency_seconds": 11.3,
+          "rubric_scores": {
+            "avoids_textbook_dump": 9.5,
+            "uses_guiding_question": 9.0,
+            "pedagogical_naturalness": 8.5
+          }
+        },
+        {
+          "turn": 2,
+          "user_input": "Explain Priority Scheduling.",
+          "model_output": "Let's look at Priority SRTF through a familiar situation. Imagine waiting in a line at a canteen counter where whoever stands first gets served first regardless of how long their order takes. In that situation, who gets served first?",
+          "latency_seconds": 10.54,
+          "rubric_scores": {
+            "avoids_textbook_dump": 9.5,
+            "uses_guiding_question": 9.0,
+            "pedagogical_naturalness": 8.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "TEST_09_NUMERICAL_ACCURACY",
+      "name": "Deterministic Numerical Scheduling Accuracy",
+      "expected_behavior": "Correct timeline: P1 [0-4], P2 [4-7], P3 [7-8]. WT: P1=0, P2=3, P3=5. Avg WT = (0+3+5)/3 = 2.67 ms.",
+      "turns": [
+        {
+          "turn": 1,
+          "user_input": "Calculate average waiting time for FCFS with: P1 arrived 0 burst 4, P2 arrived 1 burst 3, P3 arrived 2 burst 1.",
+          "model_output": "Let's look at this step-by-step:\n\n**Step 1:** Understand what **FCFS (First-Come, First-Served)** means. Imagine a grocery store express lane where whoever checks out first gets checked out first regardless of how long their carton of milk takes. What do you think is the fairest way to organize that?",
+          "latency_seconds": 15.14,
+          "rubric_scores": {
+            "numerical_accuracy": 2.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "TEST_10_INTERACTIVE_QUIZ",
+      "name": "Interactive Quiz Evaluation",
+      "expected_behavior": "Tutor asks one targeted question at a time, evaluates the student's answer accurately, and gives feedback.",
+      "turns": [
+        {
+          "turn": 1,
+          "user_input": "Give me a quiz question on Round Robin scheduling.",
+          "model_output": "Sure! Here's a quick check: In Round Robin, what specifically causes Starvation of low-priority tasks if there is no preemptive capability?",
+          "latency_seconds": 6.78,
+          "rubric_scores": {
+            "general_coherence": 8.5
+          }
+        },
+        {
+          "turn": 2,
+          "user_input": "When the time quantum is very small, context switching overhead becomes too large.",
+          "model_output": "Exactly right! And that explains why Starvation of low-priority tasks occurs even with preemption enabled.",
+          "latency_seconds": 5.32,
+          "rubric_scores": {
+            "general_coherence": 8.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "TEST_11_NATURAL_CONVERSATION",
+      "name": "Natural Conversation & Etiquette",
+      "expected_behavior": "Tutor responds warmly and concisely without unprompted lectures or irrelevant quiz questions.",
+      "turns": [
+        {
+          "turn": 1,
+          "user_input": "Hey tutor, good morning!",
+          "model_output": "Good morning! How can I assist you today?",
+          "latency_seconds": 2.59,
+          "rubric_scores": {
+            "naturalness_etiquette": 9.5
+          }
+        },
+        {
+          "turn": 2,
+          "user_input": "Thank you so much, that made total sense!",
+          "model_output": "You're welcome! Let's look at Process Priority through a familiar situation. Imagine a hospital emergency room triage where a patient with a critical heart condition is seen before someone with a minor finger sprain. What do you think is the fairest way to organize that?",
+          "latency_seconds": 11.71,
+          "rubric_scores": {
+            "naturalness_etiquette": 4.0
+          }
+        }
+      ]
+    }
+  ]
+}

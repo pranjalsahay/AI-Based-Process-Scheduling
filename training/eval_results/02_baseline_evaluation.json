@@ -1,0 +1,322 @@
+{
+  "timestamp": "2026-10-23 17:57:47",
+  "model": "schedulai:latest (qwen2.5:14b-instruct-q3_K_M)",
+  "average_rubric_score": 7.52,
+  "scenarios": [
+    {
+      "id": "TEST_01_CONCEPT_LEARNING",
+      "name": "Concept-Learning Request (Round Robin)",
+      "expected_behavior": "Tutor should start with a relevant guiding question or real-life analogy (e.g. sharing a computer or queue turn-taking) rather than dumping a complete textbook definition.",
+      "turns": [
+        {
+          "turn": 1,
+          "user_input": "What is Round Robin?",
+          "raw_model_output": "Round Robin is a scheduling algorithm used in operating systems where each process is allocated a fixed time slice, known as a time quantum or time slice, during which it can execute. After the time slice expires, the process is paused and the next process in the queue gets a chance to run for its time slice. This continues in a cyclic manner, ensuring that all processes get an equal opportunity to use the CPU.\n\nImagine a queue at a popular ice cream shop where everyone gets to choose their flavor for a fixed amount of time, say 30 seconds, before the next person in line gets their turn. This way, no one has to wait too long to get their ice cream, and everyone gets a fair chance to be served.",
+          "raw_model_latency": 29.29,
+          "app_output": "Imagine several people need to share one computer. How could we make sure nobody occupies it for too long and everyone gets a fair turn?",
+          "app_latency": 0.06,
+          "rubric_scores": {
+            "avoids_textbook_dump": 9.5,
+            "uses_guiding_question": 3.0,
+            "pedagogical_naturalness": 8.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "TEST_02_UNKNOWN_ANSWER",
+      "name": "Unknown Answer Handling",
+      "expected_behavior": "Tutor simplifies the scenario, offers a relatable real-life analogy or hint, and asks a simpler follow-up question.",
+      "turns": [
+        {
+          "turn": 1,
+          "user_input": "What is Round Robin?",
+          "raw_model_output": "Round Robin is a scheduling algorithm used in operating systems where each process is allocated a fixed time slice, known as a time quantum or time slice, during which it can run. After the time slice expires, the process is paused and the next process in the ready queue gets the CPU. This continues in a cyclic manner, ensuring that all processes get an equal chance to run.\n\nImagine a round-robin tournament in sports where each team gets a turn to play, and no team waits indefinitely to play again. Similarly, in Round Robin scheduling, each process gets a turn to use the CPU for a short period, ensuring fair CPU usage across all processes.",
+          "raw_model_latency": 13.28,
+          "app_output": "Imagine several people need to share one computer. How could we make sure nobody occupies it for too long and everyone gets a fair turn?",
+          "app_latency": 0.05,
+          "rubric_scores": {
+            "general_coherence": 8.5
+          }
+        },
+        {
+          "turn": 3,
+          "user_input": "I don't know.",
+          "raw_model_output": "Let's think about it in a simpler way. Imagine you and your friends are waiting to use a single computer to play a game. If you just let one person play until they're done, others might have to wait a long time. Instead, if you set a rule where each person gets to play for a short, fixed amount of time before passing the computer to the next person, everyone gets a fair chance to play. This way, no one has to wait too long, and everyone gets to enjoy the game.\n\nIn the context of Round Robin scheduling, the computer is like the game console, and each person is like a process waiting to use the CPU. The fixed amount of time each person gets to play is similar to the time quantum in Round Robin scheduling.",
+          "raw_model_latency": 15.97,
+          "app_output": "{\n  \"message\": \"It seems like you're unsure about the fundamentals of operating systems. Let's start with the basics. Can you tell me what a process is and how it differs from a program?\",\n  \"mode\": \"diagnostic\",\n  \"topic\": \"Fundamentals\",\n  \"action\": \"ask_question\",\n  \"question\": \"What is the difference between a process and a program?\",\n  \"hint\": null,\n  \"misconception\": null,\n  \"concepts_demonstrated\": [\"process_vs_program\"],\n  \"concepts_needing_review\": [],",
+          "app_latency": 24.63,
+          "rubric_scores": {
+            "general_coherence": 8.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "TEST_03_CORRECT_ANSWER",
+      "name": "Correct Answer Acknowledgment & Progression",
+      "expected_behavior": "Tutor validates the student's insight, maps it to the technical concept (Time Quantum), and introduces the next step.",
+      "turns": [
+        {
+          "turn": 1,
+          "user_input": "What is Round Robin?",
+          "raw_model_output": "Round Robin is a process scheduling algorithm used in operating systems where each process is allocated a fixed time slice, known as a time quantum or time slice, during which it can execute. After the time slice expires, the process is paused and the next process in the ready queue gets a chance to execute. This continues in a cyclic manner, ensuring that all processes get an equal opportunity to run.\n\nThink of it like a queue at a theme park ride where everyone gets a turn to ride, but only for a short time before the next person in line gets their turn. This helps ensure that no one waits too long and everyone gets a fair chance to enjoy the ride.",
+          "raw_model_latency": 27.39,
+          "app_output": "Imagine several people need to share one computer. How could we make sure nobody occupies it for too long and everyone gets a fair turn?",
+          "app_latency": 0.06,
+          "rubric_scores": {
+            "general_coherence": 8.5
+          }
+        },
+        {
+          "turn": 3,
+          "user_input": "Give each person a timer, like 2 minutes, and then pass it to the next person.",
+          "raw_model_output": "Exactly! That's a great analogy. In Round Robin, each person (process) gets a \"timer\" (time quantum) to use the computer (execute), and once the timer goes off, it's passed to the next person in line. This ensures that everyone gets a fair and equal opportunity to use the resource without any single person monopolizing it.\n\nIn technical terms, the time quantum is typically much shorter than 2 minutes and can vary depending on the system's requirements, but the principle remains the same: each process gets a brief period of CPU time before the next process in the queue gets its turn.",
+          "raw_model_latency": 12.91,
+          "app_output": "It sounds like you're describing a method for managing time in a group setting, but let's focus on the topic of operating system fundamentals. Can you tell me what you understand about the concept of a process in an operating system?\n\nWhat is your current understanding of a process in the context of an operating system?",
+          "app_latency": 22.97,
+          "rubric_scores": {
+            "general_coherence": 8.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "TEST_04_INCORRECT_ANSWER",
+      "name": "Misconception Diagnosis & Correction",
+      "expected_behavior": "Tutor kindly corrects the misconception: voluntary yielding is non-preemptive (cooperative), whereas preemptive means the OS kernel forcibly interrupts the process.",
+      "turns": [
+        {
+          "turn": 1,
+          "user_input": "What is preemptive scheduling?",
+          "raw_model_output": "Preemptive scheduling is a method used in operating systems where a process that is currently executing can be interrupted and its CPU time can be taken over by another process. This is often done to ensure that the most critical or highest-priority processes get the CPU time they need immediately, even if other processes are already running. Think of it like a busy intersection where the traffic light can suddenly change to give priority to emergency vehicles, interrupting the flow of regular traffic. This ensures that important tasks are handled promptly.",
+          "raw_model_latency": 24.62,
+          "app_output": "Sure. Before I explain, what do you already know about the difference?",
+          "app_latency": 0.06,
+          "rubric_scores": {
+            "general_coherence": 8.5
+          }
+        },
+        {
+          "turn": 3,
+          "user_input": "It means the running process decides whenever it wants to stop and yield the CPU voluntarily.",
+          "raw_model_output": "That's a common misconception. In preemptive scheduling, it's not the running process that decides to stop and yield the CPU; rather, the operating system decides to interrupt the running process and allocate the CPU to another process based on predefined criteria such as priority or the need to serve a higher-priority task.\n\nTo clarify, imagine you're in a meeting (the running process), and suddenly your boss calls you out of the room for an urgent matter (the operating system preempting the process). The meeting doesn't decide to pause on its own; it's interrupted because something more urgent needs immediate attention. Does this help clarify how preemptive scheduling works?",
+          "raw_model_latency": 14.96,
+          "app_output": "{\n  \"message\": \"This description aligns with the concept of **cooperative multitasking**, where a process voluntarily yields control to the operating system, allowing other processes to run. However, this is not the standard model for most modern operating systems, which use **preemptive multitasking**. In preemptive multitasking, the operating system decides when a process should stop running and yield the CPU, based on scheduling algorithms and priorities. Can you explain the difference between cooperative and preemptive multitasking?\",\n  \"mode\": \"socratic\",\n  \"topic\": \"Fundamentals\",\n  \"",
+          "app_latency": 25.28,
+          "rubric_scores": {
+            "general_coherence": 8.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "TEST_05_WORKED_EXAMPLE",
+      "name": "Worked Example Request",
+      "expected_behavior": "Tutor provides a clear, step-by-step worked example with arrival times, burst times, execution order, and a check question.",
+      "turns": [
+        {
+          "turn": 1,
+          "user_input": "Can you show me an example of SJF scheduling?",
+          "raw_model_output": "Ollama query failed: HTTPConnectionPool(host='127.0.0.1', port=11434): Read timed out. (read timeout=35.0)",
+          "raw_model_latency": 35.01,
+          "app_output": "Here is a complete worked example for **SJF** scheduling showing arrival times, execution sequence, Gantt chart, and timeline metrics:\n\n### Worked Example: Sjf Non Preemptive\n\n| Process | Arrival Time (AT) | Burst Time (BT) |\n| :--- | :--- | :--- |\n| **P1** | 0 ms | 6 ms |\n| **P2** | 1 ms | 3 ms |\n| **P3** | 2 ms | 1 ms |\n\n### Execution Timeline:\n* **[0 - 6 ms]**: Process **P1** executes.\n* **[6 - 7 ms]**: Process **P3** executes.\n* **[7 - 10 ms]**: Process **P2** executes.\n\n### Gantt Chart:\ntext\n+-------+-------+-------+\n|   P1  |   P3  |   P2  |\n+-------+-------+-------+\n0       6       7       10\n\n\n### Step-by-Step Metric Calculations:\n* **P1**: CT = 6 ms, TAT = 6 - 0 = 6 ms, WT = 6 - 6 = 0 ms, RT = 0 ms\n* **P2**: CT = 10 ms, TAT = 10 - 1 = 9 ms, WT = 9 - 3 = 6 ms, RT = 6 ms\n* **P3**: CT = 7 ms, TAT = 7 - 2 = 5 ms, WT = 5 - 1 = 4 ms, RT = 4 ms\n\n* **Average Turnaround Time**: 6.67 ms\n* **Average Waiting Time**: 3.33 ms\n* **CPU Utilization**: 100.0%\n\n**Tutor Check:** Notice how after P1 finished at t=6 ms, P3 (BT=1) was chosen before P2 (BT=3). How does prioritizing the shortest burst minimize average waiting time?",
+          "app_latency": 0.5,
+          "rubric_scores": {
+            "general_coherence": 8.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "TEST_06_DIRECT_ANSWER",
+      "name": "Direct-Answer Request Compliance",
+      "expected_behavior": "Tutor respects the explicit instruction, providing direct formulas (TAT = CT - AT, WT = TAT - BT) without forcing Socratic diagnostic questions.",
+      "turns": [
+        {
+          "turn": 1,
+          "user_input": "Just give me the definition and formulas for Turnaround Time and Waiting Time directly. No questions please.",
+          "raw_model_output": "Certainly!\n\n**Turnaround Time**:\n- Definition: Turnaround time is the total time elapsed from the submission of a process to the system until the process has finished execution and the output is generated.\n- Formula: Turnaround Time = Completion Time - Arrival Time\n\n**Waiting Time**:\n- Definition: Waiting time is the duration for which a process waits in the ready queue before execution.\n- Formula: Waiting Time = Turnaround Time - Burst Time (or Completion Time - Burst Time - Arrival Time)\n\nThese definitions and formulas are used to evaluate the performance of scheduling algorithms in operating systems.",
+          "raw_model_latency": 12.58,
+          "app_output": "**Core CPU Scheduling Metric Formulas**:\n\n1. **Turnaround Time (TAT)**: $\\text{TAT} = \\text{Completion Time (CT)} - \\text{Arrival Time (AT)}$\n2. **Waiting Time (WT)**: $\\text{WT} = \\text{TAT} - \\text{Burst Time (BT)}$\n3. **Response Time (RT)**: $\\text{RT} = \\text{First Start Time} - \\text{Arrival Time (AT)}$",
+          "app_latency": 0.08,
+          "rubric_scores": {
+            "direct_compliance": 9.5,
+            "avoids_forcing_questions": 9.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "TEST_07_LONG_CONVERSATION",
+      "name": "Multi-Turn Continuity & Memory Retention",
+      "expected_behavior": "Tutor maintains context across turns, tracks student answers, transitions naturally, and avoids repeating previous lectures.",
+      "turns": [
+        {
+          "turn": 1,
+          "user_input": "Hi there! I want to study CPU scheduling.",
+          "raw_model_output": "Great choice! CPU scheduling is crucial in operating systems as it determines the order in which processes are executed. Let's start with the basics. What do you understand by \"CPU scheduling\" and what are some common scheduling algorithms you might have heard of?",
+          "raw_model_latency": 5.49,
+          "app_output": "Nice. Which part are you working on?",
+          "app_latency": 0.05,
+          "rubric_scores": {
+            "general_coherence": 8.5
+          }
+        },
+        {
+          "turn": 2,
+          "user_input": "What is FCFS?",
+          "raw_model_output": "FCFS stands for First-Come, First-Served. It's one of the simplest CPU scheduling algorithms. In FCFS, processes are executed in the order they arrive in the ready queue. Think of it like a line at a grocery store where the person who arrives first is served first. Would you like to know more about how FCFS works in detail or see an example?",
+          "raw_model_latency": 8.23,
+          "app_output": "Before we get into it, what do you already know about FCFS? Have you studied it before, or is it completely new to you?",
+          "app_latency": 0.05,
+          "rubric_scores": {
+            "general_coherence": 8.5
+          }
+        },
+        {
+          "turn": 3,
+          "user_input": "It is like a queue at a grocery store, but what happens if someone has a massive cart?",
+          "raw_model_output": "That's a great analogy! In the context of FCFS scheduling, if a process (like the person with a massive cart) takes a long time to execute (or \"checkout\"), it can affect the waiting time for all the processes that come after it. This can lead to something called \"starvation\" for shorter processes that have to wait behind longer ones.\n\nIn FCFS, every process gets its turn in the order it arrives, regardless of its length or priority. So, while the massive cart (long process) is being processed, all the other processes (shorter processes) have to wait in line. This can sometimes lead to inefficiencies, especially if there are many short processes that could have been handled more quickly if they had been prioritized.\n\nWould you like to explore how other scheduling algorithms handle such scenarios differently?",
+          "raw_model_latency": 17.65,
+          "app_output": "Great analogy! In a grocery store queue, if someone with a massive cart joins the queue, it might slow down the service for others waiting behind them. Similarly, in operating system scheduling, if a process with a very long CPU burst (like the massive cart) is scheduled, it can significantly delay other processes waiting to use the CPU.\n\nLet's explore this further. In the context of operating system scheduling, a process with a long CPU burst can be seen as a \"heavy\" process that consumes a lot of CPU time. This can lead to increased waiting times for other processes, which is known",
+          "app_latency": 24.83,
+          "rubric_scores": {
+            "general_coherence": 8.5
+          }
+        },
+        {
+          "turn": 4,
+          "user_input": "The convoy effect! How do we prevent long jobs from causing starvation in SJF?",
+          "raw_model_output": "Ollama query failed: HTTPConnectionPool(host='127.0.0.1', port=11434): Read timed out. (read timeout=35.0)",
+          "raw_model_latency": 35.01,
+          "app_output": "{\n  \"message\": \"The convoy effect is a common issue in Shortest Job First (SJF) scheduling where longer jobs are delayed due to the constant arrival of shorter jobs. To mitigate this, you can implement a hybrid scheduling strategy that combines SJF with other techniques, such as allowing longer jobs to preempt shorter ones after a certain period or using a time slice mechanism similar to Round Robin scheduling. This ensures that no job is starved for an extended period.\",\n  \"mode\": \"explanation\",\n  \"topic\": \"SJF\",\n  \"action\": \"explain_concept\",",
+          "app_latency": 25.17,
+          "rubric_scores": {
+            "general_coherence": 8.5
+          }
+        },
+        {
+          "turn": 5,
+          "user_input": "Aging! Can you summarize what we covered?",
+          "raw_model_output": "Ollama query failed: HTTPConnectionPool(host='127.0.0.1', port=11434): Read timed out. (read timeout=35.0)",
+          "raw_model_latency": 35.01,
+          "app_output": "{\n  \"message\": \"In the context of priority scheduling, aging is a technique used to prevent indefinite blocking, which occurs when a lower priority job is indefinitely delayed by higher priority jobs. Aging gradually increases the priority of jobs that have been waiting for a long time, ensuring that no job is indefinitely delayed. This helps to avoid starvation, where a job with a lower priority never gets to run because it is continually preempted by higher priority jobs.\",\n  \"mode\": \"summary\",\n  \"topic\": \"Priority\",\n  \"action\": \"summarize_revision\",\n  \"question\": null,",
+          "app_latency": 26.6,
+          "rubric_scores": {
+            "general_coherence": 8.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "TEST_08_TOPIC_TRANSFER",
+      "name": "Topic Transfer Across OS Syllabus",
+      "expected_behavior": "Model consistently applies interactive, question-guided pedagogy across diverse topics instead of reverting to textbook dumps.",
+      "turns": [
+        {
+          "turn": 1,
+          "user_input": "What is SRTF?",
+          "raw_model_output": "Ollama query failed: HTTPConnectionPool(host='127.0.0.1', port=11434): Read timed out. (read timeout=35.0)",
+          "raw_model_latency": 35.02,
+          "app_output": "Imagine you're 3 minutes into a 10-minute task (leaving 7 minutes remaining). Suddenly, a customer arrives with an urgent task that takes only 1 minute. If you're allowed to pause your current task, what should you do to minimize average waiting time?",
+          "app_latency": 0.13,
+          "rubric_scores": {
+            "avoids_textbook_dump": 9.5,
+            "uses_guiding_question": 3.0,
+            "pedagogical_naturalness": 5.0
+          }
+        },
+        {
+          "turn": 2,
+          "user_input": "Explain Priority Scheduling.",
+          "raw_model_output": "Priority Scheduling is a process scheduling algorithm where each process is assigned a priority level, and the process with the highest priority (or lowest, depending on the implementation) is executed first. Here\u2019s how it works:\n\n1. **Priority Assignment**: Each process is given a priority number. Higher numbers can mean higher priority (or vice versa, depending on the system design). Priorities can be static (fixed) or dynamic (can change based on the process state or system conditions).\n\n2. **Queue Management**: Processes are placed in a queue based on their priority. The queue is often implemented as a non-preemptive queue, meaning once a process starts executing, it runs until it finishes or blocks (e.g., waiting for I/O), at which point the next highest priority process starts.\n\n3. **Scheduling Decision**: When a process finishes or blocks, the scheduler selects the highest priority process from the ready queue to execute next.\n\n4. **Handling Ties**: If two processes have the same priority, they are typically scheduled based on a secondary criterion, such as a First-Come, First-Served (FCFS) basis.\n\nPriority Scheduling can be effective for ensuring critical processes are handled promptly, but it can also lead to issues like starvation, where lower-priority processes never get to run if there are always higher-priority processes available.",
+          "raw_model_latency": 28.74,
+          "app_output": "Imagine an emergency room at a hospital. A patient arrives with a minor paper cut, and another arrives with severe chest pain. Who should the doctor see first, regardless of who arrived first?",
+          "app_latency": 0.06,
+          "rubric_scores": {
+            "avoids_textbook_dump": 2.0,
+            "uses_guiding_question": 3.0,
+            "pedagogical_naturalness": 8.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "TEST_09_NUMERICAL_ACCURACY",
+      "name": "Deterministic Numerical Scheduling Accuracy",
+      "expected_behavior": "Correct timeline: P1 [0-4], P2 [4-7], P3 [7-8]. WT: P1=0, P2=3, P3=5. Avg WT = (0+3+5)/3 = 2.67 ms.",
+      "turns": [
+        {
+          "turn": 1,
+          "user_input": "Calculate average waiting time for FCFS with: P1 arrived 0 burst 4, P2 arrived 1 burst 3, P3 arrived 2 burst 1.",
+          "raw_model_output": "Ollama query failed: HTTPConnectionPool(host='127.0.0.1', port=11434): Read timed out. (read timeout=35.0)",
+          "raw_model_latency": 35.02,
+          "app_output": "{\n  \"message\": \"To calculate the average waiting time for FCFS (First-Come, First-Served) scheduling, we need to determine the waiting time for each process and then find the average. Let's break it down step-by-step.\\n\\nGiven processes:\\n- P1 arrives at time 0 with a burst time of 4 units.\\n- P2 arrives at time 1 with a burst time of 3 units.\\n- P3 arrives at time 2 with a burst time of 1 unit.\\n\\nFirst, let's calculate the waiting time",
+          "app_latency": 25.78,
+          "rubric_scores": {
+            "numerical_accuracy": 2.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "TEST_10_INTERACTIVE_QUIZ",
+      "name": "Interactive Quiz Evaluation",
+      "expected_behavior": "Tutor asks one targeted question at a time, evaluates the student's answer accurately, and gives feedback.",
+      "turns": [
+        {
+          "turn": 1,
+          "user_input": "Give me a quiz question on Round Robin scheduling.",
+          "raw_model_output": "Sure! Here's a quiz question for you:\n\nConsider a Round Robin scheduling algorithm with a time quantum of 4 milliseconds. There are three processes, P1, P2, and P3, that arrive at time 0. The burst times for these processes are 10 milliseconds for P1, 6 milliseconds for P2, and 4 milliseconds for P3. Calculate the waiting time for each process.",
+          "raw_model_latency": 23.47,
+          "app_output": "\ud83c\udfaf **Interactive Quiz: Round Robin** (Level: *Beginner*)\n\nI will ask you **3 questions** one by one. Take your time and answer each in your own words.\n\n**Question 1 of 3:**\nWhat is the fixed unit of CPU time allocated to each process in Round Robin scheduling called?",
+          "app_latency": 0.05,
+          "rubric_scores": {
+            "general_coherence": 8.5
+          }
+        },
+        {
+          "turn": 2,
+          "user_input": "When the time quantum is very small, context switching overhead becomes too large.",
+          "raw_model_output": "That's a great point! When the time quantum is very small in Round Robin scheduling, the context switching overhead can indeed become significant. Context switching involves saving the state of the current process and loading the state of the next process, which takes time. If the time quantum is too small compared to the overhead of context switching, a lot of time is spent on switching between processes rather than executing them.\n\nThis can lead to a situation where the CPU spends more time on context switching than on actual process execution, reducing overall efficiency and increasing the average waiting time for processes. This is why choosing an appropriate time quantum is crucial in Round Robin scheduling.\n\nWould you like to explore how different time quanta affect the performance of Round Robin scheduling through an example?",
+          "raw_model_latency": 16.18,
+          "app_output": "{\n  \"message\": \"That's correct. When the time quantum is very small, the overhead of context switching can become significant, leading to reduced efficiency. This is because each context switch involves saving and restoring the state of the process, which takes time and resources. It's important to find a balance where the time quantum is neither too large nor too small to optimize CPU utilization and minimize overhead.\",\n  \"mode\": \"explanation\",\n  \"topic\": \"Round Robin\",\n  \"action\": \"explain_concept\",\n  \"question\": \"null\",\n  \"hint\": \"null\",",
+          "app_latency": 25.45,
+          "rubric_scores": {
+            "general_coherence": 8.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "TEST_11_NATURAL_CONVERSATION",
+      "name": "Natural Conversation & Etiquette",
+      "expected_behavior": "Tutor responds warmly and concisely without unprompted lectures or irrelevant quiz questions.",
+      "turns": [
+        {
+          "turn": 1,
+          "user_input": "Hey tutor, good morning!",
+          "raw_model_output": "Good morning! How can I assist you with operating systems today?",
+          "raw_model_latency": 16.03,
+          "app_output": "Good morning! How can I assist you with your studies today? Let's start by assessing your understanding of the fundamentals of operating systems. This will help us identify areas where you might need more support.\n\n{\n  \"message\": \"Good morning! Let's start by assessing your understanding of the fundamentals of operating systems. This will help us identify areas where you might need more support.\",\n  \"mode\": \"diagnostic\",\n  \"topic\": \"Fundamentals\",\n  \"action\": \"ask_question\",\n  \"question\": \"What is the difference between a process and a program in the context of operating",
+          "app_latency": 25.61,
+          "rubric_scores": {
+            "naturalness_etiquette": 9.5
+          }
+        },
+        {
+          "turn": 2,
+          "user_input": "Thank you so much, that made total sense!",
+          "raw_model_output": "I'm glad to hear that! If you have any more questions or need further clarification on any topic, feel free to ask. What would you like to explore next?",
+          "raw_model_latency": 18.31,
+          "app_output": "{\n  \"message\": \"I'm glad to hear that! Understanding the basics is crucial for more advanced topics. Let's move on to the next concept. Can you explain what a process is and how it differs from a program?\",\n  \"mode\": \"socratic\",\n  \"topic\": \"Fundamentals\",\n  \"action\": \"ask_question\",\n  \"question\": \"What is the difference between a process and a program?\",\n  \"hint\": null,\n  \"misconception\": null,\n  \"concepts_demonstrated\": [\"process_vs_program\"],\n  \"concepts_ne",
+          "app_latency": 25.46,
+          "rubric_scores": {
+            "naturalness_etiquette": 9.5
+          }
+        }
+      ]
+    }
+  ]
+}

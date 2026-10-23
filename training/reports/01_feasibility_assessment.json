@@ -1,0 +1,158 @@
+{
+  "timestamp": "2026-10-23 17:41:30",
+  "system": {
+    "os": "Windows",
+    "os_version": "10.0.26300",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "python_version": "3.10.11",
+    "python_executable": "C:\\Users\\suraj\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
+    "working_directory": "C:\\pranjalos"
+  },
+  "hardware": {
+    "cpu_count_logical": 16,
+    "cpu_count_physical": 8,
+    "ram_total_gb": 15.31,
+    "ram_available_gb": 5.99,
+    "disk_total_gb": 951.46,
+    "disk_free_gb": 464.8
+  },
+  "gpu": {
+    "cuda_available_torch": true,
+    "cuda_version_torch": "12.1",
+    "device_count": 1,
+    "device_name": "NVIDIA GeForce RTX 5050 Laptop GPU",
+    "vram_total_gb": 7.96,
+    "cuda_capability": "sm_120",
+    "cuda_kernel_functional": false,
+    "cuda_kernel_error": "CUDA error: no kernel image is available for execution on the device",
+    "nvidia_smi_available": true,
+    "nvidia_driver_version": "617.42"
+  },
+  "ml_packages": {
+    "torch": "2.5.1+cu121",
+    "transformers": "5.17.0",
+    "peft": "0.21.2",
+    "trl": "1.14.2",
+    "datasets": "5.1.0",
+    "accelerate": "1.15.0",
+    "bitsandbytes": "NOT INSTALLED"
+  },
+  "ollama": {
+    "daemon_running": true,
+    "models": [
+      {
+        "name": "schedulai:latest",
+        "size_gb": 6.84,
+        "modified_at": "2026-10-23T00:43:54.4090437+05:30",
+        "details": {
+          "parent_model": "qwen2.5:14b-instruct-q3_K_M",
+          "format": "gguf",
+          "family": "qwen2",
+          "families": [
+            "qwen2"
+          ],
+          "parameter_size": "14.8B",
+          "quantization_level": "Q3_K_M",
+          "context_length": 32768,
+          "embedding_length": 5120,
+          "runner": "llamacpp"
+        }
+      },
+      {
+        "name": "qwen2.5:14b-instruct-q3_K_M",
+        "size_gb": 6.84,
+        "modified_at": "2026-09-22T23:21:36.8934828+05:30",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen2",
+          "families": [
+            "qwen2"
+          ],
+          "parameter_size": "14.8B",
+          "quantization_level": "Q3_K_M",
+          "context_length": 32768,
+          "embedding_length": 5120,
+          "runner": "ggml"
+        }
+      },
+      {
+        "name": "qwen2.5:14b",
+        "size_gb": 8.37,
+        "modified_at": "2026-09-22T09:41:55.6987877+05:30",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen2",
+          "families": [
+            "qwen2"
+          ],
+          "parameter_size": "14.8B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 32768,
+          "embedding_length": 5120,
+          "runner": "ggml"
+        }
+      },
+      {
+        "name": "llama3.1:latest",
+        "size_gb": 4.58,
+        "modified_at": "2026-09-20T21:04:19.4801237+05:30",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "llama",
+          "families": [
+            "llama"
+          ],
+          "parameter_size": "8.0B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 131072,
+          "embedding_length": 4096,
+          "runner": "ggml"
+        }
+      }
+    ],
+    "active_model": null,
+    "active_model_details": {}
+  },
+  "baseline_latency": {
+    "server_running": true,
+    "status_code": 200,
+    "round_trip_seconds": 0.056,
+    "direct_ollama_seconds": null
+  },
+  "feasibility": {
+    "current_model": "schedulai:latest (parent: qwen2.5:14b-instruct-q3_K_M)",
+    "model_parameter_count": "14.8 Billion",
+    "model_format": "GGUF Q3_K_M",
+    "gpu_model": "NVIDIA GeForce RTX 5050 Laptop GPU",
+    "gpu_vram_gb": 7.96,
+    "gpu_architecture": "Blackwell sm_120",
+    "torch_cuda_status": "sm_120 kernel missing in current PyTorch 2.5.1+cu121 build",
+    "is_14b_trainable_locally": false,
+    "14b_infeasibility_reasons": [
+      "14.8B parameters require ~28 GB VRAM for FP16 or >12 GB VRAM for 4-bit QLoRA with optimizer states and context activations.",
+      "Available GPU VRAM is 8.0 GB, causing immediate Out-of-Memory (OOM) on 14B QLoRA.",
+      "System RAM is 15.3 GB total (~6 GB free), which cannot hold 14B FP16 weights (28 GB).",
+      "Current PyTorch build lacks precompiled sm_120 kernels for RTX 5050 Laptop GPU."
+    ],
+    "recommended_approach": {
+      "strategy": "Parameter-Efficient Fine-Tuning (LoRA) on Qwen2.5-0.5B-Instruct / Qwen2.5-1.5B-Instruct",
+      "base_model": "Qwen/Qwen2.5-0.5B-Instruct",
+      "target_architecture": "Qwen2ForCausalLM",
+      "parameter_count": "490 Million",
+      "precision": "FP32/BF16 on CPU with multi-threading or compatible acceleration",
+      "adapter_type": "LoRA (rank=16, alpha=32, target_modules=['q_proj', 'k_proj', 'v_proj', 'o_proj', 'gate_proj', 'up_proj', 'down_proj'])",
+      "memory_footprint_gb": "~1.5 GB",
+      "expected_training_time": "~15-30 minutes for 1,000-2,000 training examples",
+      "deployment_strategy": "Export trained LoRA adapter -> Merge into standalone weights -> Export to GGUF -> Register in Ollama as 'schedulai-tuned:latest' -> Seamless zero-downtime integration with instant rollback to 'schedulai:latest'"
+    },
+    "benefits": [
+      "100% stable execution within available RAM (15.3 GB) and disk space (465 GB free).",
+      "Direct alignment with Qwen2.5 chat template, tokenization, and vocabulary.",
+      "Drastic inference speedup (1-2s vs 25s on 14B) while deeply embedding Socratic inquiry and syllabus mastery.",
+      "Complete independence from uncompiled Blackwell CUDA kernels during training."
+    ]
+  }
+}

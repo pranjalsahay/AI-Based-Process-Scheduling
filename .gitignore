@@ -34,3 +34,13 @@ data/chroma/
 *.log
 .vscode/
 .idea/
+
+# Virtual Environments & Training Checkpoints
+.venv_train/
+.venv/
+~$*
+
+# Large ML model weights (> 100MB exceeds GitHub push limits)
+training/base_model/
+training/merged_model/
+*.safetensors
